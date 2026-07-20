@@ -28,7 +28,7 @@ author:
   pronouns         : # example: "she/her"  
   bio              : "Researcher in ML/AI"
   location         : "WSAI, IIT Madras"
-  employer         : "WSAI, IIT Madras"
+  employer         : #WSAI
   uri              : # URL
   email            : "sairam.sundararaman2005@gmail.com" 
 
