@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-I'm a Research Intern at the [WSAI](https://wsai.iitm.ac.in//) at **IIT Madras**, where I am supervised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). Concurrently, I am a undergrad at PES University earning my Bachelor's in Computer Science and Engineering (AI&ML), advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). My research interests lie primarily in the theory and practice of Trustworthy ML, with a focus on privacy-preserving and adversarially robust ML. 
+I'm a Research Intern at the [WSAI](https://wsai.iitm.ac.in/) at **IIT Madras**, where I am supervised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). Concurrently, I am a undergrad at PES University earning my Bachelor's in Computer Science and Engineering (AI&ML), advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). My research interests lie primarily in the theory and practice of Trustworthy ML, with a focus on privacy-preserving and adversarially robust ML. 
 
 My research at WSAI is centred around differentially private synthetic data generation using LLMs. I am also currently exploring interesting extensions of this work.
 
