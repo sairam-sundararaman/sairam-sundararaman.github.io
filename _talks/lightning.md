@@ -9,4 +9,5 @@ location: "Chennai, TN, India"
 ---
 
 Gave a short talk based off my research in my internship.
+
 *[Topic]* Private synthetic data generation.
