@@ -8,6 +8,6 @@ date: 2026-07-01
 location: "Chennai, TN, India"
 ---
 
-Gave a short talk based off my research in my internship.
+Gave a short talk based off my research during my internship.
 
 *[Topic]* Private synthetic data generation.
