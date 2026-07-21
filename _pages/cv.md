@@ -11,9 +11,12 @@ redirect_from:
 
 <div style="width: 100%; height: 75vh;">
   <iframe
-    src="{{ '/assets/pdfjs/web/viewer.html?file=/files/Resume_Sairam_August26.pdf' | relative_url }}"
+    src="/files/Resume_Sairam_August26.pdf"
     style="width: 100%; height: 100%; border: none;"
     allowfullscreen
-    loading="lazy">
+    loading="lazy"
+    title="Sairam Sundararaman Resume">
+    Your browser does not support PDFs. 
+    <a href="/files/Resume_Sairam_August26.pdf">Download the PDF</a>.
   </iframe>
-</div>
+</div>   
