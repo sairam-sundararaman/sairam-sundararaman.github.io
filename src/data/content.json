@@ -1,0 +1,125 @@
+{
+  "site": {
+    "name": "Sairam Sundararaman",
+    "citationName": "Sairam S",
+    "eyebrow": "Trustworthy ML Research",
+    "tagline": "I study differential privacy and adversarial robustness — currently building privacy-preserving synthetic data generation with LLMs, and probing how quantization and optimization reshape the geometry of neural loss landscapes.",
+    "role": "Research Intern",
+    "lab": "WSAI",
+    "institution": "IIT Madras",
+    "metaDescription": "Sairam Sundararaman — Research Intern at WSAI, IIT Madras, working on differential privacy, robustness, and trustworthy machine learning."
+  },
+
+  "contact": {
+    "email": "sairam.sundararaman2005@gmail.com",
+    "github": "https://github.com/sairam-sundararaman",
+    "googleScholar": "https://scholar.google.com/citations?user=FFQdp-YAAAAJ",
+    "orcid": "https://orcid.org/0009-0000-6320-720X"
+  },
+
+  "education": {
+    "institution": "PES University",
+    "years": "2023 – 2027",
+    "degree": "B.Tech in Computer Science and Engineering (AI & ML)",
+    "gpa": "8.6 / 10",
+    "advisor": { "name": "Prof. Bhaskarjyoti Das", "url": "https://staff.pes.edu/nm1700/" }
+  },
+
+  "researchRole": {
+    "title": "Research Intern",
+    "lab": "WSAI",
+    "institution": "IIT Madras",
+    "labUrl": "https://wsai.iitm.ac.in/",
+    "period": "June 2026 – August 2026",
+    "advisor": { "name": "Prof. Krishna Pillutla", "url": "https://krishnap25.github.io/" },
+    "description": "Developing a differentially private LLM framework tailored for private synthetic data generation.",
+    "interests": ["Differential Privacy", "Robustness", "Adversarial ML"]
+  },
+
+  "about": {
+    "paragraphs": [
+      "I'm a Research Intern at WSAI, IIT Madras, supervised by Prof. Krishna Pillutla, and an undergraduate at PES University finishing my B.Tech in Computer Science (AI & ML), advised by Prof. Bhaskarjyoti Das. My work sits in the theory and practice of trustworthy ML — privacy-preserving and adversarially robust learning, mostly.",
+      "At WSAI, I work on differentially private synthetic data generation with LLMs, alongside a few extensions of that idea I'm chasing on the side.",
+      "Before this, I was a Teaching Assistant at PES University for Mathematics for Computer Science, to a cohort of ninety."
+    ]
+  },
+
+  "news": [
+    { "date": "June 2026", "text": "Started as a Research Intern at WSAI, IIT Madras." },
+    { "date": "March 2026", "text": "Our paper, The Final-Stage Bottleneck, was accepted at TMLR." },
+    { "date": "August 2025", "text": "Began as a Teaching Assistant at PES University for Mathematics for Computer Science, under Dr. Anitha N." }
+  ],
+
+  "publications": [
+    {
+      "title": "The Final-Stage Bottleneck: A Systematic Dissection of the R-Learner for Network Causal Inference",
+      "authors": ["Sairam S", "Sara Girdhar", "Shivam Soni"],
+      "venue": "Transactions on Machine Learning Research (TMLR)",
+      "year": "2026",
+      "links": {
+        "openreview": "https://openreview.net/forum?id=QIE0FVSn0p",
+        "pdf": "https://openreview.net/pdf?id=QIE0FVSn0p"
+      }
+    }
+  ],
+
+  "projects": [
+    {
+      "title": "The Geometry of Bit-Collapse: Quantization Instability",
+      "period": "Winter '26",
+      "bullets": [
+        "Investigated geometric failure modes of Post-Training Quantization (PTQ) on ResNet-18 / CIFAR-10 using a custom Hessian Spectrum Visualizer (PyHessian, averaged over 40 batches for variance reduction).",
+        "Diagnosed \"Bit-Collapse\": Int8 quantization sharply narrows the loss basin and triggers spectral eigenvalue spikes, destabilizing standard SGD training regimes.",
+        "Demonstrated that SAM fully restores geometric stability under quantization, recovering a flatter loss basin than the FP32 baseline — suggesting SAM as a principled mitigation for quantization-induced sharpness."
+      ],
+      "links": { "code": "", "writeup": "" }
+    },
+    {
+      "title": "Reproducibility Study: The SAM Optimizer",
+      "period": "Fall '25",
+      "bullets": [
+        "Implemented a clean-room version of Sharpness-Aware Minimization (ICLR 2021) from first principles, manually engineering the dual-step perturbation-ascent / gradient-descent logic via explicit gradient normalization.",
+        "Reproduced Wide-ResNet / CIFAR-10 accuracy (~96% vs. the paper's ~97%), then identified a structural gap in the original formulation: SAM implicitly outsources model-complexity regularization to weight decay, leaving it unaccounted for in the perturbation objective.",
+        "Characterized a failure regime: the second-order gradient approximation degrades precisely at sharp minima — the regime SAM is designed to escape — revealing a theoretical tension in the algorithm's core assumption."
+      ],
+      "links": { "code": "", "writeup": "" }
+    },
+    {
+      "title": "A First-Principles Dissection of Optimization Pathologies",
+      "period": "Fall '25",
+      "bullets": [
+        "Built a NumPy-based Hessian geometry engine to compute and visualize 2D loss landscapes (Rosenbrock, Beale), diagnosing the oscillatory failure mode of vanilla SGD in high-curvature valleys.",
+        "Analytically demonstrated how momentum dampens gradient noise via exponential averaging, accelerating convergence in ill-conditioned optimization basins."
+      ],
+      "links": { "code": "", "writeup": "" }
+    },
+    {
+      "title": "Reverse-Mode AutoDiff Engine",
+      "period": "Summer '25",
+      "bullets": [
+        "Architected a scalar-valued autograd engine from scratch, implementing reverse-mode automatic differentiation via local gradient accumulation on dynamically constructed DAGs with topological sort.",
+        "Verified numerical correctness against PyTorch to < 10⁻⁶ precision across composite differentiable functions, building ground-up intuition for backpropagation mechanics."
+      ],
+      "links": { "code": "", "writeup": "" }
+    }
+  ],
+
+  "achievements": [
+    { "text": "Dr. MR Doreswamy Merit Scholarship Awardee", "year": "2024" },
+    { "text": "CN Rao Merit Scholarship Awardee", "year": "2024" }
+  ],
+
+  "talks": [
+    { "text": "Lightning Talks", "venue": "WSAI, IIT Madras", "year": "2026" }
+  ],
+
+  "teaching": [
+    {
+      "text": "Teaching Assistant — Mathematics for Computer Science",
+      "detail": "Prof. Anitha N, PES University",
+      "year": "2025"
+    }
+  ],
+
+  "resumeFile": "/resume.pdf"
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sairam Sundararaman</title>
+    <!--
+      GitHub Pages has no server-side router, so a direct visit to /cv or
+      /about (or a refresh on those routes) would normally 404. This encodes
+      the requested path into a query string and sends the browser back to
+      index.html, which decodes it and restores the real route.
+      Pattern: rafgraph/spa-github-pages (MIT).
+      pathSegmentsToKeep = 0 because this is a user/org page
+      (sairam-sundararaman.github.io) served from the domain root, not a
+      project page under a /repo-name/ sub-path.
+    -->
+    <script type="text/javascript">
+      var pathSegmentsToKeep = 0;
+      var l = window.location;
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname
+            .split('/')
+            .slice(0, 1 + pathSegmentsToKeep)
+            .join('/') +
+          '/?/' +
+          l.pathname
+            .slice(1)
+            .split('/')
+            .slice(pathSegmentsToKeep)
+            .join('/')
+            .replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
