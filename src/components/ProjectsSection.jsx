@@ -1,5 +1,6 @@
 import { Code, FileText } from "lucide-react";
 import { useRevealOnScroll } from "../lib/useRevealOnScroll";
+import { RichText } from "./ui/RichText";
 import content from "../data/content.json";
 
 export function ProjectsSection() {
@@ -26,7 +27,9 @@ export function ProjectsSection() {
                   {project.bullets.map((b, i) => (
                     <li key={i} className="flex gap-3">
                       <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-mist/50" />
-                      <span>{b}</span>
+                      <span>
+                        <RichText text={b} />
+                      </span>
                     </li>
                   ))}
                 </ul>

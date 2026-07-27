@@ -38,7 +38,7 @@
 
   "about": {
     "paragraphs": [
-      "I'm a Research Intern at WSAI, IIT Madras, supervised by Prof. Krishna Pillutla, and an undergraduate at PES University finishing my B.Tech in Computer Science (AI & ML), advised by Prof. Bhaskarjyoti Das. My work sits in the theory and practice of trustworthy ML — privacy-preserving and adversarially robust learning, mostly.",
+      "I'm a Research Intern at [WSAI](https://wsai.iitm.ac.in/), IIT Madras, supervised by [Prof. Krishna Pillutla](https://krishnap25.github.io/), and an undergraduate at PES University finishing my B.Tech in Computer Science (AI & ML), advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). My work sits in the theory and practice of trustworthy ML — privacy-preserving and adversarially robust learning, mostly.",
       "At WSAI, I work on differentially private synthetic data generation with LLMs, alongside a few extensions of that idea I'm chasing on the side.",
       "Before this, I was a Teaching Assistant at PES University for Mathematics for Computer Science, to a cohort of ninety."
     ]

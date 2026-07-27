@@ -1,6 +1,7 @@
 import { Download } from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { ContourDivider } from "../components/ui/ContourDivider";
+import { RichText } from "../components/ui/RichText";
 import { useRevealOnScroll } from "../lib/useRevealOnScroll";
 import content from "../data/content.json";
 
@@ -56,7 +57,9 @@ export function CV() {
             period={researchRole.period}
             meta={`${researchRole.institution} · Advisor: ${researchRole.advisor.name}`}
           >
-            <p>{researchRole.description}</p>
+            <p>
+              <RichText text={researchRole.description} />
+            </p>
             <p className="mt-3 font-mono text-xs uppercase tracking-wide text-mist">{researchRole.interests.join(" / ")}</p>
           </TimelineRow>
         </div>
@@ -67,7 +70,9 @@ export function CV() {
             {achievements.map((a) => (
               <li key={a.text} className="flex items-baseline gap-4">
                 <span className="w-14 shrink-0 font-mono text-xs text-mist">{a.year}</span>
-                <span className="text-ink">{a.text}</span>
+                <span className="text-ink">
+                  <RichText text={a.text} />
+                </span>
               </li>
             ))}
           </ul>
@@ -80,7 +85,7 @@ export function CV() {
               <li key={t.text} className="flex items-baseline gap-4">
                 <span className="w-14 shrink-0 font-mono text-xs text-mist">{t.year}</span>
                 <span className="text-ink">
-                  {t.text} <span className="text-mist">— {t.venue}</span>
+                  <RichText text={t.text} /> <span className="text-mist">— {t.venue}</span>
                 </span>
               </li>
             ))}
@@ -94,7 +99,7 @@ export function CV() {
               <li key={t.text} className="flex items-baseline gap-4">
                 <span className="w-14 shrink-0 font-mono text-xs text-mist">{t.year}</span>
                 <span className="text-ink">
-                  {t.text} <span className="text-mist">— {t.detail}</span>
+                  <RichText text={t.text} /> <span className="text-mist">— {t.detail}</span>
                 </span>
               </li>
             ))}

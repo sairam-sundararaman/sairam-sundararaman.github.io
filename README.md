@@ -43,10 +43,22 @@ education, achievements — lives in one file:
 src/data/content.json
 ```
 
-Edit it directly in GitHub's web UI (open the file → pencil icon → edit →
-commit to `main`), or edit locally and `git push`. Either way, the commit
-triggers the Actions workflow, which rebuilds and redeploys automatically.
-No local build step is required for content changes.
+**To edit it on github.com, no local setup needed:**
+1. Go to the repo → open `src/data/content.json`.
+2. Click the pencil icon (top right of the file view) to edit.
+3. Make your change, scroll down, commit directly to `main`.
+4. That commit triggers the Actions workflow automatically — check the
+   **Actions** tab, and the live site updates in about a minute.
+
+**Turning any word into a link:** any text field in `content.json` (bio
+paragraphs, project bullets, news items, achievements, talks) supports
+inline links using `[word or phrase](https://the-url)`, e.g.:
+```
+"I collaborate with [the WSAI lab](https://wsai.iitm.ac.in/) on this."
+```
+renders with "the WSAI lab" as a real clickable link, styled to match the
+rest of the site. This isn't full markdown — just that one link syntax —
+so things like `**bold**` or `*italic*` won't do anything.
 
 A few fields to fill in when you're ready:
 - `projects[].links.code` / `links.writeup` — empty for now since no repo

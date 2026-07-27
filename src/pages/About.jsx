@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRevealOnScroll } from "../lib/useRevealOnScroll";
 import { ContourDivider } from "../components/ui/ContourDivider";
+import { RichText } from "../components/ui/RichText";
 import content from "../data/content.json";
 
 function Portrait() {
@@ -40,14 +41,14 @@ export function About() {
         <h1 className="mt-3 font-display text-3xl text-ink sm:text-4xl">A bit more about me</h1>
 
         <div className="mt-10 flex flex-col gap-10 sm:flex-row">
-          <div className="reveal-child shrink-0">
+          <div className="shrink-0">
             <Portrait />
           </div>
 
           <div ref={bioRef} className="space-y-5 text-[15px] leading-relaxed text-mist sm:text-base">
             {about.paragraphs.map((p, i) => (
               <p key={i} className="bio-p reveal-child">
-                {p}
+                <RichText text={p} />
               </p>
             ))}
 
@@ -86,7 +87,9 @@ export function About() {
               className="news-row reveal-child flex flex-col gap-1 border-b border-line py-4 sm:flex-row sm:items-baseline sm:gap-6"
             >
               <span className="shrink-0 font-mono text-xs text-mist sm:w-24">{n.date}</span>
-              <span className="text-ink">{n.text}</span>
+              <span className="text-ink">
+                <RichText text={n.text} />
+              </span>
             </div>
           ))}
         </div>
