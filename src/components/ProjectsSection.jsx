@@ -1,57 +1,62 @@
 import { Code, FileText } from "lucide-react";
 import { useRevealOnScroll } from "../lib/useRevealOnScroll";
-import { Card, CardEyebrow, CardTitle } from "./ui/Card";
 import content from "../data/content.json";
 
 export function ProjectsSection() {
-  const ref = useRevealOnScroll({ stagger: ".project-card" });
+  const ref = useRevealOnScroll({ stagger: ".project-entry" });
   const { projects } = content;
 
   return (
-    <section className="bg-paper-dim">
-      <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-        <h2 className="mb-10 font-display text-2xl text-ink sm:text-3xl">Projects</h2>
+    <section>
+      <div className="mx-auto max-w-4xl px-6 py-20 sm:px-10 sm:py-28">
+        <h2 className="mb-12 font-display text-2xl text-ink sm:text-3xl">Projects</h2>
 
-        <div ref={ref} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div ref={ref} className="divide-y divide-line">
           {projects.map((project) => (
-            <Card key={project.title} className="project-card reveal-child bg-white flex flex-col">
-              <CardEyebrow>{project.period}</CardEyebrow>
-              <CardTitle>{project.title}</CardTitle>
+            <div
+              key={project.title}
+              className="project-entry reveal-child grid grid-cols-1 gap-3 py-9 first:pt-0 sm:grid-cols-[7rem_1fr] sm:gap-8"
+            >
+              <p className="font-mono text-xs uppercase tracking-wide text-mist">{project.period}</p>
 
-              <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-steel">
-                {project.bullets.map((b, i) => (
-                  <li key={i} className="flex gap-2.5">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-azure/60" />
-                    <span>{b}</span>
-                  </li>
-                ))}
-              </ul>
+              <div>
+                <h3 className="font-display text-xl leading-snug text-ink sm:text-2xl">{project.title}</h3>
 
-              {(project.links.code || project.links.writeup) && (
-                <div className="mt-5 flex gap-5 pt-1">
-                  {project.links.code && (
-                    <a
-                      href={project.links.code}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-azure hover:underline"
-                    >
-                      <Code size={13} /> Code
-                    </a>
-                  )}
-                  {project.links.writeup && (
-                    <a
-                      href={project.links.writeup}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-azure hover:underline"
-                    >
-                      <FileText size={13} /> Write-up
-                    </a>
-                  )}
-                </div>
-              )}
-            </Card>
+                <ul className="mt-4 space-y-2.5 text-sm leading-relaxed text-mist">
+                  {project.bullets.map((b, i) => (
+                    <li key={i} className="flex gap-3">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-mist/50" />
+                      <span>{b}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {(project.links.code || project.links.writeup) && (
+                  <div className="mt-5 flex gap-6">
+                    {project.links.code && (
+                      <a
+                        href={project.links.code}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="link-underline inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                      >
+                        <Code size={13} /> Code
+                      </a>
+                    )}
+                    {project.links.writeup && (
+                      <a
+                        href={project.links.writeup}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="link-underline inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                      >
+                        <FileText size={13} /> Write-up
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>

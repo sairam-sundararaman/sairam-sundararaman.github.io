@@ -33,10 +33,10 @@ export function Footer() {
   const { contact } = content;
 
   return (
-    <footer id="contact" className="scroll-mt-6 border-t border-line-dark bg-void">
+    <footer id="contact" className="scroll-mt-6 border-t border-line bg-void">
       <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-8">
         <div className="space-y-2">
-          <p className="font-display text-white/90">Reach out about research, or anything else.</p>
+          <p className="font-display text-ink/90">Reach out about research, or anything else.</p>
           <CopyEmail email={contact.email} />
         </div>
 
@@ -58,7 +58,7 @@ export function Footer() {
           </a>
         </div>
       </div>
-      <div className="border-t border-line-dark px-5 py-4 text-center font-mono text-[11px] text-mist/70 sm:px-8">
+      <div className="border-t border-line px-5 py-4 text-center font-mono text-[11px] text-mist/70 sm:px-8">
         Built with React, Three.js &amp; anime.js — deployed on GitHub Pages.
       </div>
     </footer>

@@ -9,9 +9,9 @@ automatically on every push via GitHub Actions.
 Your GitHub Pages repo (`sairam-sundararaman/sairam-sundararaman.github.io`)
 currently serves a Jekyll site. This project replaces that. To go live:
 
-1. **Add your headshot** (optional, but you said yes): drop a photo in as
-   `public/headshot.jpg`. If you skip this, the hero shows a clean "SS"
-   monogram instead — nothing breaks either way.
+1. **Add your headshot**: drop a photo in as `public/headshot.jpg`. It shows
+   in full color on the About page (not the homepage). Skip it and the About
+   page falls back to a clean "SS" monogram — nothing breaks either way.
 
 2. **Push this project to the repo**, replacing what's there now:
    ```bash
@@ -89,19 +89,26 @@ public/
 
 ## Design notes
 
-- **Palette**: cool paper-white body sections, a near-black "void" hero and
-  nav/footer, azure→cyan as the one accent. Tokens live in `src/index.css`
-  under `@theme` — change `--color-azure` / `--color-cyan` etc. there to
-  retune the whole site's palette from one place.
+- **Palette**: one theme throughout — near-black "void" background, off-white
+  text, cyan as the only real accent (used sparingly: hover states, active
+  nav link, a couple of links). No cards, no borders-as-boxes, no colored
+  pill badges/buttons anywhere — structure comes from type scale, spacing,
+  and thin hairline rules instead. Tokens live in `src/index.css` under
+  `@theme` — change `--color-void` / `--color-cyan` etc. there to retune the
+  whole site from one place.
 - **Type**: STIX Two Text (serif, scientific/academic typesetting lineage)
   for headings, IBM Plex Sans for body copy, IBM Plex Mono for dates/tags/
   metadata — all loaded via Google Fonts in `index.html`.
-- **The hero mesh** (`src/components/three/LossLandscape.jsx`) is a stand-in
-  loss landscape, not a generic decorative blob — a nod to the Hessian/
-  loss-surface visualizations in your own projects. `WIDTH`, `DEPTH`,
-  `SEG_X`, `SEG_Y` at the top of that file control its size/density if you
-  want it larger, smaller, or more/less detailed; the `LOW`/`HIGH` constants
-  control its color gradient.
+- **The headshot** lives only on the About page, in full color, plain crop —
+  intentionally not on the homepage, so the landing page reads as a serious
+  research page rather than a marketing/profile-card layout.
+- **The hero mesh** (`src/components/three/LossLandscape.jsx`) is a quiet
+  wireframe-only loss landscape, not a generic decorative blob — a nod to
+  the Hessian/loss-surface visualizations in your own projects, kept
+  deliberately subtle (thin lines, low opacity) rather than a glossy
+  centerpiece. `WIDTH`, `DEPTH`, `SEG_X`, `SEG_Y` at the top of that file
+  control its size/density; `opacity` on its material controls how faint
+  it is.
 - Routing uses `BrowserRouter` (clean URLs like `/cv`, not `/#/cv`) paired
   with the standard GitHub Pages SPA redirect trick (`public/404.html` +
   a small decode script in `index.html`) so direct links and refreshes on

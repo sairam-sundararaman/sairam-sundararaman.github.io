@@ -18,7 +18,7 @@ function NavItem({ to, label, end, onClick }) {
       className={({ isActive }) =>
         cn(
           "font-mono text-[13px] tracking-wide uppercase transition-colors duration-200",
-          isActive ? "text-cyan" : "text-mist hover:text-white"
+          isActive ? "text-cyan" : "text-mist hover:text-ink"
         )
       }
     >
@@ -31,20 +31,20 @@ export function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line-dark bg-void/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-        <NavLink to="/" className="font-display text-lg text-white">
+    <header className="relative z-50">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-6 sm:px-10">
+        <NavLink to="/" className="font-display text-lg text-ink">
           Sairam Sundararaman
         </NavLink>
 
-        <nav className="hidden items-center gap-8 sm:flex">
+        <nav className="hidden items-center gap-10 sm:flex">
           {LINKS.map((l) => (
             <NavItem key={l.to} {...l} />
           ))}
         </nav>
 
         <button
-          className="text-white sm:hidden"
+          className="text-ink sm:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
@@ -55,11 +55,11 @@ export function Nav() {
 
       <div
         className={cn(
-          "overflow-hidden border-t border-line-dark bg-void transition-[max-height] duration-300 ease-out sm:hidden",
+          "overflow-hidden transition-[max-height] duration-300 ease-out sm:hidden",
           open ? "max-h-48" : "max-h-0"
         )}
       >
-        <nav className="flex flex-col gap-1 px-5 py-4">
+        <nav className="flex flex-col gap-1 border-t border-line px-6 py-4">
           {LINKS.map((l) => (
             <div key={l.to} className="py-2">
               <NavItem {...l} onClick={() => setOpen(false)} />

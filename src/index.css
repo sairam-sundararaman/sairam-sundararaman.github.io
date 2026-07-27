@@ -1,20 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* -- color: refined-academic, cool base + blue/cyan signature -- */
-  --color-ink: #0b0d10;
-  --color-paper: #f6f7f6;
-  --color-paper-dim: #eceeed;
-  --color-void: #060810;
-  --color-void-soft: #0d111a;
-  --color-line: #dee1e4;
-  --color-line-dark: #1c222d;
-  --color-steel: #5b6472;
+  /* One theme, dark, throughout — no light/dark hybrid. */
+  --color-void: #08090a;
+  --color-void-raised: #121419;
+  --color-ink: #edeef0;
   --color-mist: #8b93a3;
-  --color-azure: #2e5fe8;
+  --color-line: #20242c;
+  --color-azure: #3b6ef5;
   --color-cyan: #2fd3d8;
 
-  /* -- type: scientific serif display + engineered sans/mono body -- */
   --font-display: "STIX Two Text", "Iowan Old Style", serif;
   --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
@@ -44,7 +39,7 @@
   }
 
   body {
-    @apply bg-paper text-ink font-body antialiased;
+    @apply bg-void text-ink font-body antialiased;
     font-feature-settings: "ss01" 1;
   }
 
@@ -54,8 +49,12 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-azure);
+    outline: 2px solid var(--color-cyan);
     outline-offset: 3px;
+  }
+
+  a {
+    text-underline-offset: 3px;
   }
 }
 
@@ -67,8 +66,6 @@
     color: transparent;
   }
 
-  /* Initial state for anything revealed by useRevealOnScroll, so it's
-     hidden from first paint rather than flashing in before JS runs. */
   .reveal,
   .reveal-child {
     opacity: 0;
@@ -81,5 +78,17 @@
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* underline that draws in on hover, instead of a colored button pill */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
   }
 }
