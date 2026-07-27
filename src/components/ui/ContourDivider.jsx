@@ -1,9 +1,8 @@
 import { cn } from "../../lib/utils";
 
 /**
- * A thin, quiet contour-line rule used between sections. Echoes the
- * loss-landscape motif from the hero without repeating its boldness —
- * the one deliberate callback, kept understated everywhere else.
+ * A thin, quiet contour-line rule used between sections — a small
+ * recurring bit of texture, kept understated everywhere outside the hero.
  */
 export function ContourDivider({ className }) {
   return (

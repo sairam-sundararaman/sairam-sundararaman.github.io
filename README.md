@@ -1,8 +1,9 @@
 # sairam-sundararaman.github.io
 
 Personal / academic site for Sairam Sundararaman. React + Vite + Tailwind v4,
-a Three.js loss-landscape hero, anime.js for motion, deployed to GitHub Pages
-automatically on every push via GitHub Actions.
+a Three.js loss-landscape hero, anime.js + Motion (motion.dev) for
+animation and page transitions, deployed to GitHub Pages automatically on
+every push via GitHub Actions.
 
 ## One-time setup
 
@@ -102,25 +103,31 @@ public/
 ## Design notes
 
 - **Palette**: one theme throughout — near-black "void" background, off-white
-  text, cyan as the only real accent (used sparingly: hover states, active
-  nav link, a couple of links). No cards, no borders-as-boxes, no colored
-  pill badges/buttons anywhere — structure comes from type scale, spacing,
-  and thin hairline rules instead. Tokens live in `src/index.css` under
-  `@theme` — change `--color-void` / `--color-cyan` etc. there to retune the
-  whole site from one place.
-- **Type**: STIX Two Text (serif, scientific/academic typesetting lineage)
-  for headings, IBM Plex Sans for body copy, IBM Plex Mono for dates/tags/
-  metadata — all loaded via Google Fonts in `index.html`.
-- **The headshot** lives only on the About page, in full color, plain crop —
-  intentionally not on the homepage, so the landing page reads as a serious
-  research page rather than a marketing/profile-card layout.
-- **The hero mesh** (`src/components/three/LossLandscape.jsx`) is a quiet
-  wireframe-only loss landscape, not a generic decorative blob — a nod to
-  the Hessian/loss-surface visualizations in your own projects, kept
-  deliberately subtle (thin lines, low opacity) rather than a glossy
-  centerpiece. `WIDTH`, `DEPTH`, `SEG_X`, `SEG_Y` at the top of that file
-  control its size/density; `opacity` on its material controls how faint
-  it is.
+  text, cyan as the only real accent. No cards, no borders-as-boxes, no
+  colored pill badges/buttons anywhere — structure comes from type scale,
+  spacing, and thin hairline rules instead. Tokens live in `src/index.css`
+  under `@theme`.
+- **Type**: Roboto Flex at weight 100 / width 151% (its thinnest and widest
+  settings, via `font-weight`/`font-stretch` in the `.font-display` rule,
+  which map to that variable font's `wght`/`wdth` axes) for all headings;
+  DM Sans at weight 300 with `font-optical-sizing: auto` for body copy, so
+  its `opsz` axis adjusts automatically between small and large text; IBM
+  Plex Mono, unchanged, for dates/tags/metadata. All loaded as variable
+  fonts via the Google Fonts `<link>` in `index.html`.
+- **The headshot** lives only on the About page, in full color, plain crop.
+- **The hero scene** (`src/components/three/OrbitalRings.jsx`) is a quiet
+  armillary-sphere-like construct — a few thin rings on different axes,
+  turning slowly at their own pace around one still, cyan center point.
+  Radius/opacity constants are at the top of that file.
+- **Scroll animations**: `src/lib/useRevealOnScroll.js` fades content in as
+  it scrolls into view and back out as it leaves — bidirectional, replays
+  every time, done with anime.js, kept plain (opacity + a small translateY
+  only).
+- **Links**: any inline link from `[text](url)` syntax, or the
+  Publications/Projects reference links, uses `.link-fill` in
+  `src/index.css` — cyan text at rest, and on hover a fill sweeps in behind
+  just that word while the text inverts to the background color for
+  contrast.
 - Routing uses `BrowserRouter` (clean URLs like `/cv`, not `/#/cv`) paired
   with the standard GitHub Pages SPA redirect trick (`public/404.html` +
   a small decode script in `index.html`) so direct links and refreshes on

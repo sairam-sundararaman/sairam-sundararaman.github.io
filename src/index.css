@@ -10,8 +10,8 @@
   --color-azure: #3b6ef5;
   --color-cyan: #2fd3d8;
 
-  --font-display: "STIX Two Text", "Iowan Old Style", serif;
-  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-display: "Roboto Flex", "Helvetica Neue", sans-serif;
+  --font-body: "DM Sans", "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", monospace;
 }
 
@@ -41,6 +41,13 @@
   body {
     @apply bg-void text-ink font-body antialiased;
     font-feature-settings: "ss01" 1;
+    font-weight: 300;
+    font-optical-sizing: auto;
+  }
+
+  .font-display {
+    font-weight: 100;
+    font-stretch: 151%; /* Roboto Flex's wdth axis maxes out at 151% */
   }
 
   ::selection {
@@ -90,5 +97,23 @@
   }
   .link-underline:hover {
     background-size: 100% 1px;
+  }
+
+  /* inline content links: distinct resting color, a fill sweeps in behind
+     just that word on hover and the text itself inverts for contrast */
+  .link-fill {
+    color: var(--color-cyan);
+    background-image: linear-gradient(var(--color-cyan), var(--color-cyan));
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 0% 100%;
+    border-radius: 3px;
+    padding: 0.05em 0.3em;
+    margin: 0 -0.3em;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s ease 0.12s;
+  }
+  .link-fill:hover {
+    background-size: 100% 100%;
+    color: var(--color-void);
   }
 }

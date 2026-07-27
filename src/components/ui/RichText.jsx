@@ -27,7 +27,7 @@ export function RichText({ text, as: Tag = "span", className }) {
         href={url}
         target={external ? "_blank" : undefined}
         rel={external ? "noreferrer" : undefined}
-        className="link-underline text-ink hover:text-cyan"
+        className="link-fill"
       >
         {label}
       </a>

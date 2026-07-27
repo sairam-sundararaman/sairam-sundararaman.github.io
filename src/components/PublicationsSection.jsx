@@ -17,7 +17,7 @@ export function PublicationsSection() {
               href={content.contact.googleScholar}
               target="_blank"
               rel="noreferrer"
-              className="link-underline font-mono text-xs uppercase tracking-wide text-mist hover:text-cyan"
+              className="link-fill font-mono text-xs uppercase tracking-wide"
             >
               Google Scholar
             </a>
@@ -39,7 +39,7 @@ export function PublicationsSection() {
                     href={pub.links.openreview}
                     target="_blank"
                     rel="noreferrer"
-                    className="link-underline font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                    className="link-fill font-mono text-xs uppercase tracking-wide"
                   >
                     OpenReview
                   </a>
@@ -49,7 +49,7 @@ export function PublicationsSection() {
                     href={pub.links.pdf}
                     target="_blank"
                     rel="noreferrer"
-                    className="link-underline font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                    className="link-fill font-mono text-xs uppercase tracking-wide"
                   >
                     PDF
                   </a>

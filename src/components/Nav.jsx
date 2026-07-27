@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { motion, LayoutGroup } from "motion/react";
 import { cn } from "../lib/utils";
 
 const LINKS = [
@@ -9,20 +10,28 @@ const LINKS = [
   { to: "/cv", label: "CV" },
 ];
 
-function NavItem({ to, label, end, onClick }) {
+function NavItem({ to, label, end, onClick, showIndicator }) {
   return (
-    <NavLink
-      to={to}
-      end={end}
-      onClick={onClick}
-      className={({ isActive }) =>
-        cn(
-          "font-mono text-[13px] tracking-wide uppercase transition-colors duration-200",
-          isActive ? "text-cyan" : "text-mist hover:text-ink"
-        )
-      }
-    >
-      {label}
+    <NavLink to={to} end={end} onClick={onClick} className="relative py-1">
+      {({ isActive }) => (
+        <>
+          <span
+            className={cn(
+              "font-mono text-[13px] tracking-wide uppercase transition-colors duration-200",
+              isActive ? "text-cyan" : "text-mist hover:text-ink"
+            )}
+          >
+            {label}
+          </span>
+          {showIndicator && isActive && (
+            <motion.span
+              layoutId="nav-active-indicator"
+              className="absolute -bottom-1 left-0 right-0 h-px bg-cyan"
+              transition={{ type: "spring", stiffness: 420, damping: 34 }}
+            />
+          )}
+        </>
+      )}
     </NavLink>
   );
 }
@@ -37,11 +46,13 @@ export function Nav() {
           Sairam Sundararaman
         </NavLink>
 
-        <nav className="hidden items-center gap-10 sm:flex">
-          {LINKS.map((l) => (
-            <NavItem key={l.to} {...l} />
-          ))}
-        </nav>
+        <LayoutGroup>
+          <nav className="hidden items-center gap-10 sm:flex">
+            {LINKS.map((l) => (
+              <NavItem key={l.to} {...l} showIndicator />
+            ))}
+          </nav>
+        </LayoutGroup>
 
         <button
           className="text-ink sm:hidden"

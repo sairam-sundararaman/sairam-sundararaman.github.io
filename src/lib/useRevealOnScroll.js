@@ -2,14 +2,15 @@ import { useEffect, useRef } from "react";
 import { animate, stagger as animeStagger } from "animejs";
 
 /**
- * Reveals an element (or its staggered children) once, the first time it
- * scrolls into view. Uses the native IntersectionObserver to decide *when*
- * (reliable, no re-triggering on scroll-back) and anime.js to do the actual
- * tweening. Fully skips motion for prefers-reduced-motion.
+ * Fades an element (or its staggered children) in when it scrolls into
+ * view, and back out when it scrolls out — replays every time, either
+ * direction. Kept deliberately plain: opacity + a small translateY, no
+ * scale/rotation. Skips motion entirely for prefers-reduced-motion.
  *
  * @param {Object} opts
  * @param {string} [opts.stagger] - CSS selector (scoped to the ref'd element)
- *   for children to stagger-reveal. Omit to reveal the ref'd element itself.
+ *   for children to stagger on the way in. Exit is simultaneous, not
+ *   staggered — enter one by one, leave together.
  */
 export function useRevealOnScroll({ stagger: staggerSelector } = {}) {
   const ref = useRef(null);
@@ -38,13 +39,19 @@ export function useRevealOnScroll({ stagger: staggerSelector } = {}) {
       ([entry]) => {
         if (entry.isIntersecting) {
           animate(targets, {
-            opacity: [0, 1],
-            translateY: [24, 0],
-            duration: 700,
-            delay: staggerSelector ? animeStagger(90) : 0,
+            opacity: 1,
+            translateY: 0,
+            duration: 650,
+            delay: staggerSelector ? animeStagger(80) : 0,
             ease: "outExpo",
           });
-          observer.disconnect();
+        } else {
+          animate(targets, {
+            opacity: 0,
+            translateY: 16,
+            duration: 400,
+            ease: "outQuad",
+          });
         }
       },
       { threshold: 0.15, rootMargin: "0px 0px -80px 0px" }

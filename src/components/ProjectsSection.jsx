@@ -41,7 +41,7 @@ export function ProjectsSection() {
                         href={project.links.code}
                         target="_blank"
                         rel="noreferrer"
-                        className="link-underline inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                        className="link-fill inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide"
                       >
                         <Code size={13} /> Code
                       </a>
@@ -51,7 +51,7 @@ export function ProjectsSection() {
                         href={project.links.writeup}
                         target="_blank"
                         rel="noreferrer"
-                        className="link-underline inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide text-ink hover:text-cyan"
+                        className="link-fill inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-wide"
                       >
                         <FileText size={13} /> Write-up
                       </a>
