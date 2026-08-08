@@ -3,7 +3,7 @@
     "name": "Sairam Sundararaman",
     "citationName": "Sairam S",
     "eyebrow": "Trustworthy ML Research",
-    "tagline": "I study differential privacy and adversarial robustness — currently building privacy-preserving synthetic data generation with LLMs, and probing how quantization and optimization reshape the geometry of neural loss landscapes.",
+    "tagline": "I study differential privacy and adversarial robustness — currently building privacy-preserving synthetic data generation with LLMs.",
     "role": "Research Intern",
     "lab": "WSAI",
     "institution": "IIT Madras",
@@ -39,7 +39,7 @@
   "about": {
     "paragraphs": [
       "I'm a Research Intern at [WSAI](https://wsai.iitm.ac.in/), IIT Madras, supervised by [Prof. Krishna Pillutla](https://krishnap25.github.io/), and an undergraduate at PES University finishing my B.Tech in Computer Science (AI & ML), advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). My work sits in the theory and practice of trustworthy ML — privacy-preserving and adversarially robust learning, mostly.",
-      "At WSAI, I work on differentially private synthetic data generation with LLMs, alongside a few extensions of that idea I'm chasing on the side.",
+      "At WSAI, I work on differentially private synthetic data generation with LLMs.",
       "Before this, I was a Teaching Assistant at PES University for Mathematics for Computer Science, to a cohort of ninety."
     ]
   },
@@ -72,7 +72,7 @@
         "Diagnosed \"Bit-Collapse\": Int8 quantization sharply narrows the loss basin and triggers spectral eigenvalue spikes, destabilizing standard SGD training regimes.",
         "Demonstrated that SAM fully restores geometric stability under quantization, recovering a flatter loss basin than the FP32 baseline — suggesting SAM as a principled mitigation for quantization-induced sharpness."
       ],
-      "links": { "code": "", "writeup": "" }
+      "links": { "code": "https://github.com/sairam-sundararaman/bit-collapse-geometry", "writeup": "" }
     },
     {
       "title": "Reproducibility Study: The SAM Optimizer",
@@ -82,7 +82,7 @@
         "Reproduced Wide-ResNet / CIFAR-10 accuracy (~96% vs. the paper's ~97%), then identified a structural gap in the original formulation: SAM implicitly outsources model-complexity regularization to weight decay, leaving it unaccounted for in the perturbation objective.",
         "Characterized a failure regime: the second-order gradient approximation degrades precisely at sharp minima — the regime SAM is designed to escape — revealing a theoretical tension in the algorithm's core assumption."
       ],
-      "links": { "code": "", "writeup": "" }
+      "links": { "code": "https://github.com/sairam-sundararaman/sam-optimizer", "writeup": "" }
     },
     {
       "title": "A First-Principles Dissection of Optimization Pathologies",
@@ -91,7 +91,7 @@
         "Built a NumPy-based Hessian geometry engine to compute and visualize 2D loss landscapes (Rosenbrock, Beale), diagnosing the oscillatory failure mode of vanilla SGD in high-curvature valleys.",
         "Analytically demonstrated how momentum dampens gradient noise via exponential averaging, accelerating convergence in ill-conditioned optimization basins."
       ],
-      "links": { "code": "", "writeup": "" }
+      "links": { "code": "https://github.com/sairam-sundararaman/loss-landscape-calculus", "writeup": "" }
     },
     {
       "title": "Reverse-Mode AutoDiff Engine",
@@ -100,7 +100,7 @@
         "Architected a scalar-valued autograd engine from scratch, implementing reverse-mode automatic differentiation via local gradient accumulation on dynamically constructed DAGs with topological sort.",
         "Verified numerical correctness against PyTorch to < 10⁻⁶ precision across composite differentiable functions, building ground-up intuition for backpropagation mechanics."
       ],
-      "links": { "code": "", "writeup": "" }
+      "links": { "code": "https://github.com/sairam-sundararaman/micrograd", "writeup": "" }
     }
   ],
 
