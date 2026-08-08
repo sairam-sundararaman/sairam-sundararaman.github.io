@@ -38,9 +38,9 @@
 
   "about": {
     "paragraphs": [
-      "I'm a Research Intern at [WSAI](https://wsai.iitm.ac.in/), IIT Madras, supervised by [Prof. Krishna Pillutla](https://krishnap25.github.io/), and an undergraduate at PES University finishing my B.Tech in Computer Science (AI & ML), advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). My work sits in the theory and practice of trustworthy ML — privacy-preserving and adversarially robust learning, mostly.",
-      "At WSAI, I work on differentially private synthetic data generation with LLMs.",
-      "Before this, I was a Teaching Assistant at PES University for Mathematics for Computer Science, to a cohort of ninety."
+      " I'm Sairam — Sai to most people, a final-year computer science student at PES University, currently interning at [WSAI](https://wsai.iitm.ac.in/) under [Prof. Krishna Pillutla](https://krishnap25.github.io/), working on differential privacy for machine learning.",
+      "I like problems where something breaks in an interesting way and the interesting part is figuring out exactly why. That's shown up across causal inference, quantization, and optimizer design, usually the same move: name the failure precisely, show why it happens, then check it empirically.",
+      "Outside of research: I was a teaching assistant for Mathematics for Computer Science at PES, and I picked up the Dr. MR Doreswamy and CN Rao merit scholarships along the way. I gave a lightning talk at WSAI, IIT Madras earlier this year.",      
     ]
   },
 
