@@ -1,29 +1,23 @@
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Home, Research, Projects, About } from './pages'
+import { Home, About } from './pages'
 import { profile } from './content'
-
-const links: [string, string][] = [['/', 'Index'], ['/research', 'Research'], ['/projects', 'Projects'], ['/about', 'About']]
 
 export default function App() {
   const loc = useLocation()
   return (
     <>
       <header className="nav">
-        <NavLink to="/" className="mark">S<i>.</i></NavLink>
+        <NavLink to="/" className="mark">{profile.name}</NavLink>
         <nav>
-          {links.map(([to, l]) => (
-            <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => (isActive ? 'on' : '')}>{l}</NavLink>
-          ))}
+          <NavLink to="/" end className={({ isActive }) => (isActive ? 'on' : '')}>Home</NavLink>
+          <NavLink to="/about" className={({ isActive }) => (isActive ? 'on' : '')}>About</NavLink>
         </nav>
       </header>
-      {/* Nav and footer stay put; only the page's text animates out and in. The main exit just holds the page mounted until the words have left. */}
+      {/* Nav and footer stay put; only the page's text animates out and in. */}
       <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
         <motion.main key={loc.pathname} exit={{ opacity: 0.999, transition: { duration: 0.55 } }}>
           <Routes location={loc}>
-            <Route path="/" element={<Home />} />
-            <Route path="/research" element={<Research />} />
-            <Route path="/projects" element={<Projects />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<Home />} />
           </Routes>

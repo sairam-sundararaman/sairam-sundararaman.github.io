@@ -6,9 +6,11 @@ export const profile = {
   short: 'Sairam S',
   role: 'Research intern, WSAI, IIT Madras',
   tagline: 'I study privacy and robustness in machine learning, from first principles.',
+  blurb:
+    "I'm a research intern at WSAI, IIT Madras, advised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). I work on differentially private mechanisms for language models and on understanding why ML methods fail. I'm also in the final year of my B.Tech at PES University.",
   bio: [
-    "I'm a research intern at WSAI, IIT Madras, working with [Prof. Krishna Pillutla](https://krishnap25.github.io/). My focus is making language models private without giving up much accuracy: I'm designing a new differentially private mechanism for transformers and working out the math behind it myself.",
-    "I'm in the final year of a B.Tech in CSE (AI & ML) at PES University advised by [Prof. Bhaskarjyoti Das](https://staff.pes.edu/nm1700/). I learn by rebuilding things, such as an autodiff engine, SAM, and loss-landscape tools, until I can say exactly where and why they break.",
+    "The thread through my work is failure: take a method people rely on, then work out exactly when and why it breaks. My TMLR paper does that for the R-learner in network causal inference, my SAM reproduction does it for a popular optimizer, and the bit-collapse project does it for post-training quantization.",
+    "I build things from scratch before trusting a library: an autodiff engine, SAM, a Hessian tool for loss landscapes. Right now I'm applying the same habit to privacy at WSAI, deriving the noise calibration for a new DP mechanism myself instead of treating it as a recipe.",
   ],
   email: 'sairam.sundararaman2005@gmail.com',
   resume: '/resume.pdf',
@@ -34,13 +36,13 @@ export const publication = {
 }
 
 export const research = {
-  title: 'Differentially private mechanisms for transformers',
+  title: 'Differentially private mechanisms for transformer LLMs',
   where: 'WSAI, IIT Madras · Advisor: [Prof. Krishna Pillutla](https://krishnap25.github.io/)',
   when: 'June 2026 – present',
   points: [
-    'Designing and analyzing a novel DP mechanism targeting tighter privacy-utility tradeoffs than standard DP-SGD baselines.',
-    'Derived sensitivity bounds and Gaussian-mechanism noise calibration from first principles; formalized privacy composition under zCDP across layers and generated tokens.',
-    'Implemented and benchmarked on distilgpt2 and Qwen2.5-7B-Instruct.',
+    'Designing a new DP mechanism for transformers, aiming for a better privacy-utility tradeoff than DP-SGD baselines.',
+    'Deriving sensitivity bounds and Gaussian noise calibration from scratch, and composing privacy across layers and generated tokens with zCDP.',
+    'Benchmarking on distilgpt2 and Qwen2.5-7B-Instruct.',
   ],
   interests: ['Differential privacy', 'Robustness', 'Adversarial ML'],
 }
@@ -50,14 +52,14 @@ export const projects: { title: string; when: string; summary: string; links: Li
     title: 'The Geometry of Bit-Collapse',
     when: "Winter '26",
     summary:
-      "Int8 quantization makes ResNet-18's loss basin sharper and spikes its Hessian eigenvalues, which destabilizes SGD. Adding SAM brings the curvature back, to a basin flatter than full precision.",
+      "Int8 quantization sharpens ResNet-18's loss basin and spikes its Hessian eigenvalues, destabilizing SGD. SAM restores a basin flatter than full precision.",
     links: [{ label: 'GitHub', href: 'https://github.com/sairam-sundararaman/bit-collapse-geometry' }],
   },
   {
     title: 'Reproducing SAM',
     when: "Fall '25",
     summary:
-      "I rebuilt Sharpness-Aware Minimization from scratch and got ~96% on CIFAR-10 against the paper's ~97%. Along the way I found two weak spots: SAM relies on weight decay without accounting for it, and its approximation gets worse at exactly the sharp minima it is meant to escape.",
+      "Clean-room SAM reaching ~96% on CIFAR-10 against the paper's ~97%. It exposed two weak spots: SAM leans on weight decay without accounting for it, and its approximation degrades at sharp minima.",
     links: [
       { label: 'GitHub', href: 'https://github.com/sairam-sundararaman/sam-optimizer' },
       { label: 'W&B', href: 'https://wandb.ai/pesu-ai-ml/sam-replication-cifar10' },
@@ -67,14 +69,13 @@ export const projects: { title: string; when: string; summary: string; links: Li
     title: 'Optimization Pathologies',
     when: "Fall '25",
     summary:
-      'A NumPy tool that maps 2D loss landscapes (Rosenbrock, Beale). It shows why plain SGD zigzags down narrow valleys and how momentum smooths the path out.',
+      'Maps 2D loss landscapes (Rosenbrock, Beale) to show why SGD zigzags in narrow valleys and how momentum smooths the path.',
     links: [{ label: 'GitHub', href: 'https://github.com/sairam-sundararaman/loss-landscape-calculus' }],
   },
   {
     title: 'Reverse-Mode AutoDiff Engine',
     when: "Summer '25",
-    summary:
-      'A scalar autograd engine written from scratch: reverse-mode differentiation over a dynamically built graph. It agrees with PyTorch to within 1e-6.',
+    summary: 'A scalar autograd engine built from scratch. It matches PyTorch to within 1e-6.',
     links: [{ label: 'GitHub', href: 'https://github.com/sairam-sundararaman/micrograd' }],
   },
 ]
@@ -87,3 +88,9 @@ export const about = {
   ],
   teaching: { t: 'Teaching Assistant, Mathematics for Computer Science, PES University', y: '2025' },
 }
+
+export const news: { date: string; text: string }[] = [
+  { date: 'Jun 2026', text: 'Started as a Research Intern at WSAI, IIT Madras.' },
+  { date: 'Mar 2026', text: 'The Final-Stage Bottleneck [accepted at TMLR](https://openreview.net/forum?id=QIE0FVSn0p).' },
+  { date: 'Aug 2025', text: 'Teaching Assistant for Mathematics for Computer Science at PES University.' },
+]
