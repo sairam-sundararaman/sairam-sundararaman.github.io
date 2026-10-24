@@ -7,9 +7,9 @@ compatibility_date = "2025-09-01"
 directory = "./public"
 
 [[d1_databases]]
-binding = "DB"
+binding = "ma_stats"
 database_name = "ma-stats"
-database_id = "REPLACE_WITH_YOUR_DATABASE_ID" # printed by `npx wrangler d1 create ma-stats`
+database_id = "be4a15b5-bd4a-411c-a337-eaa2242d0a1e" # printed by `npx wrangler d1 create ma-stats`
 
 [vars]
 ALLOWED_ORIGIN = "https://sairam-sundararaman.github.io"
