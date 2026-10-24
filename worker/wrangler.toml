@@ -1,0 +1,19 @@
+name = "ma-stats"
+main = "src/index.ts"
+compatibility_date = "2025-09-01"
+
+# Static files (dashboard CSS/JS, fonts, world map). The dashboard HTML and the API are served by the Worker behind a login.
+[assets]
+directory = "./public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ma-stats"
+database_id = "REPLACE_WITH_YOUR_DATABASE_ID" # printed by `npx wrangler d1 create ma-stats`
+
+[vars]
+ALLOWED_ORIGIN = "https://sairam-sundararaman.github.io"
+
+# Secrets (set with `npx wrangler secret put NAME`, never committed):
+#   DASH_PASSWORD   the dashboard login password
+#   SESSION_SECRET  a long random string used to sign the session cookie

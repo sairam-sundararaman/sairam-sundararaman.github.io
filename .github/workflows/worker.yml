@@ -1,0 +1,25 @@
+name: Deploy stats worker
+
+# Optional and manual: run it from the Actions tab. It needs two repository secrets,
+# CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID. Deploying by hand works too: cd worker && npx wrangler deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - run: npm ci
+      - run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

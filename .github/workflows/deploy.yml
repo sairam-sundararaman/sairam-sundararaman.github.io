@@ -1,15 +1,20 @@
-name: Deploy
+name: Deploy site
+
 on:
   push:
     branches: [main]
+    paths-ignore: ['worker/**', '**/*.md']
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,13 +22,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          # Set under Settings > Secrets and variables > Actions > Variables. Leave unset to disable analytics.
+          PUBLIC_STATS_ENDPOINT: ${{ vars.PUBLIC_STATS_ENDPOINT }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest

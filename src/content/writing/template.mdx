@@ -1,0 +1,31 @@
+---
+title: "Template: math, sidenotes, citations"
+description: "A draft that shows every writing feature. Delete it, or copy it to start a post."
+date: 2026-10-23
+tags: [template]
+draft: true
+---
+
+A randomized mechanism $M$ is $(\varepsilon,\delta)$-differentially private if, for all neighbouring datasets $D, D'$ and every measurable set $S$,
+
+$$
+\Pr[M(D) \in S] \le e^{\varepsilon}\,\Pr[M(D') \in S] + \delta .
+$$
+
+Calibrating noise to sensitivity is the idea at the core of the definition [@dwork2006calibrating]. Adding $\mathcal{N}(0,\sigma^2 I)$ noise to a query with $\ell_2$-sensitivity $\Delta$ is the standard instance.<Sidenote>This release satisfies $\rho$-zCDP with $\rho = \Delta^2 / 2\sigma^2$ [@bun2016concentrated], and zCDP costs add up across releases.</Sidenote>
+
+## Code
+
+```python
+import numpy as np
+
+def gaussian_mechanism(x, sigma, rng=np.random.default_rng()):
+    # sigma is the absolute noise standard deviation
+    return x + rng.normal(0.0, sigma, size=np.shape(x))
+```
+
+## Figures
+
+Use `<Figure src="/images/plot.png" alt="..." caption="..." wide />` for an image in a golden-ratio opening. `wide` lets it run into the margin.
+
+A second sidenote, to show the numbering.<Sidenote>Sidenotes become tap-to-reveal notes on narrow screens.</Sidenote>

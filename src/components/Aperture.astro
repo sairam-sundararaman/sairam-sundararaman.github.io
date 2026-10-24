@@ -1,0 +1,8 @@
+---
+// A framed opening on a tonal plane. Portrait is 1 : φ; landscape is φ : 1.
+const { ratio = 'portrait', caption } = Astro.props;
+---
+<figure class:list={['ap', ratio]}>
+  <div class="ap-plane"><slot /></div>
+  {caption && <figcaption class="label">{caption}</figcaption>}
+</figure>

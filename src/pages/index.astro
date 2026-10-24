@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import Aperture from '../components/Aperture.astro';
+import { Image } from 'astro:assets';
+import photo from '../assets/photo.jpg';
+import { site, profile, publication, research, projects, news } from '../data/site';
+import { inline, typo } from '../lib/inline';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  url: site.url,
+  jobTitle: 'Research intern',
+  affiliation: { '@type': 'Organization', name: 'WSAI, IIT Madras' },
+  sameAs: profile.links.map((l) => l.href),
+};
+const contact = [
+  { label: 'Email', href: `mailto:${profile.email}` },
+  { label: 'Resume', href: profile.resume },
+  ...profile.links,
+];
+---
+<Base description={profile.tagline} jsonLd={jsonLd}>
+  <div class="wrap">
+    <section class="hero" aria-labelledby="name">
+      <div class="hero-main">
+        <p class="label">{profile.role}</p>
+        <div>
+          <h1 id="name" class="hero-name">Sairam<br />Sundararaman</h1>
+          <p class="hero-blurb" set:html={inline(profile.blurb)} />
+        </div>
+      </div>
+      <div class="hero-side">
+        <Aperture>
+          <Image src={photo} alt="Portrait of Sairam Sundararaman" width={596} height={964} fit="cover" position="top" format="webp" quality={82} loading="eager" fetchpriority="high" />
+        </Aperture>
+        <p class="label">{research.interests.join(' · ')}</p>
+        <ul class="links" role="list">
+          {contact.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="research">
+      <div class="sec-lead">
+        <h2 id="research" class="label">Research</h2>
+        <p class="lead">{research.title}</p>
+      </div>
+      <div>
+        <p class="label" set:html={inline(`${research.where} · ${research.when}`)} />
+        <ul class="plain" role="list" style="margin-top: var(--s3)">
+          {research.points.map((p) => <li>{typo(p)}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="publications">
+      <div class="sec-lead"><h2 id="publications" class="label">Publications</h2></div>
+      <div class="item">
+        <h3>{publication.title}</h3>
+        <p class="muted" style="margin-top: var(--s1)">{publication.authors.join(', ')}</p>
+        <p class="label">{publication.venue} · {publication.year}</p>
+        <ul class="links" role="list">
+          {publication.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="projects">
+      <div class="sec-lead"><h2 id="projects" class="label">Projects</h2></div>
+      <div class="items">
+        {projects.map((p) => (
+          <article class="item">
+            <h3>{typo(p.title)}</h3>
+            <p class="label">{typo(p.when)}</p>
+            <p>{typo(p.summary)}</p>
+            <ul class="links" role="list">
+              {p.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="news">
+      <div class="sec-lead"><h2 id="news" class="label">News</h2></div>
+      <ul class="news" role="list">
+        {news.map((n) => <li><span class="label">{n.date}</span><span set:html={inline(n.text)} /></li>)}
+      </ul>
+    </section>
+  </div>
+</Base>

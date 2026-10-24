@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import { profile, about } from '../data/site';
+import { inline, typo } from '../lib/inline';
+
+const analytics = Boolean(import.meta.env.PUBLIC_STATS_ENDPOINT);
+const contact = [
+  { label: 'Email', href: `mailto:${profile.email}` },
+  { label: 'Resume', href: profile.resume },
+  ...profile.links,
+];
+---
+<Base title="About" description="Background, education, honours and teaching.">
+  <div class="wrap">
+    <section class="sec first">
+      <div class="sec-lead"><h1 class="page-title">About</h1></div>
+      <div class="plain">
+        {profile.bio.map((p) => <p set:html={inline(p)} />)}
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="education">
+      <div class="sec-lead"><h2 id="education" class="label">Education</h2></div>
+      <div class="plain">
+        <p>{about.education.school}</p>
+        <p class="muted">{about.education.degree} · {about.education.years}</p>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="honours">
+      <div class="sec-lead"><h2 id="honours" class="label">Honours</h2></div>
+      <ul class="plain" role="list">
+        {about.honors.map((h) => <li>{h.t} <span class="muted">· {h.y}</span></li>)}
+      </ul>
+    </section>
+
+    <section class="sec" aria-labelledby="teaching">
+      <div class="sec-lead"><h2 id="teaching" class="label">Teaching</h2></div>
+      <p>{about.teaching.t} <span class="muted">· {about.teaching.y}</span></p>
+    </section>
+
+    <section class="sec" aria-labelledby="contact">
+      <div class="sec-lead"><h2 id="contact" class="label">Contact</h2></div>
+      <ul class="links" role="list">
+        {contact.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </section>
+
+    {analytics && (
+      <section class="sec" aria-labelledby="privacy">
+        <div class="sec-lead"><h2 id="privacy" class="label">Privacy</h2></div>
+        <p class="muted">
+          Page views are counted without cookies. No IP address is stored: a salted hash that is thrown away each day lets a visitor count once per
+          day, and only daily totals by page, country and city are kept. The counter runs on Cloudflare Workers, and Do Not Track and Global Privacy
+          Control are honoured.
+        </p>
+      </section>
+    )}
+  </div>
+</Base>

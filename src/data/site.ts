@@ -1,4 +1,5 @@
-// All site content lives here. Edit, push to main, the site redeploys.
+// All non-blog content lives here. Edit, push to main, the site redeploys.
+// Strings may contain [text](https://link) markdown links.
 export type Link = { label: string; href: string }
 
 export const profile = {
@@ -94,3 +95,9 @@ export const news: { date: string; text: string }[] = [
   { date: 'Mar 2026', text: 'The Final-Stage Bottleneck [accepted at TMLR](https://openreview.net/forum?id=QIE0FVSn0p).' },
   { date: 'Aug 2025', text: 'Teaching Assistant for Mathematics for Computer Science at PES University.' },
 ]
+
+export const site = {
+  name: profile.name,
+  url: 'https://sairam-sundararaman.github.io',
+  description: profile.tagline,
+};

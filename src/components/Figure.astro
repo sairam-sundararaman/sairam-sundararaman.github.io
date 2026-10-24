@@ -1,0 +1,8 @@
+---
+// Use in MDX: <Figure src="/images/x.png" alt="…" caption="…" wide />
+const { src, alt, caption, wide = false, ratio = 'landscape' } = Astro.props;
+---
+<figure class:list={['fig', { wide }]}>
+  <div class:list={['ap-plane', ratio]}><img src={src} alt={alt} loading="lazy" decoding="async" /></div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, fmtDate, readingTime } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+<Base title="Writing" description="Notes and write-ups.">
+  <div class="wrap">
+    <section class="sec first">
+      <div class="sec-lead"><h1 class="page-title">Writing</h1></div>
+      <div class="items">
+        {posts.length === 0 ? (
+          <p class="empty">Nothing here yet. <a href="/rss.xml">Subscribe</a> to hear when that changes.</p>
+        ) : (
+          posts.map((post) => (
+            <article class="item">
+              <h2><a href={`/writing/${post.id}/`}>{post.data.title}</a></h2>
+              <p class="label">{fmtDate(post.data.date)} · {readingTime(post.body)} min{post.data.draft ? ' · draft' : ''}</p>
+              <p>{post.data.description}</p>
+            </article>
+          ))
+        )}
+      </div>
+    </section>
+  </div>
+</Base>

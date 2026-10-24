@@ -1,0 +1,6 @@
+---
+// Margin note on wide screens, tap-to-reveal inline on narrow ones. No JavaScript.
+const g = globalThis as unknown as { __sn?: number };
+const id = `sn-${(g.__sn = (g.__sn ?? 0) + 1)}`;
+---
+<label for={id} class="sn-ref" role="button" aria-label="Show note"></label><input type="checkbox" id={id} class="sn-toggle" /><span class="sidenote"><slot /></span>

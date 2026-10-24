@@ -1,0 +1,79 @@
+---
+import '@fontsource-variable/source-serif-4/opsz.css';
+import '@fontsource-variable/source-serif-4/opsz-italic.css';
+import '@fontsource-variable/geist-mono';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  published?: Date;
+  jsonLd?: object;
+}
+const { title, description = site.description, image = '/og/default.png', type = 'website', published, jsonLd } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = title ? `${title} · ${site.name}` : site.name;
+const ogImage = new URL(image, Astro.site);
+const endpoint = import.meta.env.PUBLIC_STATS_ENDPOINT ?? '';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#E8E6E1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script is:inline>
+      // Apply a saved theme before first paint (otherwise the system setting applies via CSS).
+      try { var t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Nav current={Astro.url.pathname} />
+    <main id="main"><slot /></main>
+    <Footer />
+    {endpoint && (
+      <script is:inline define:vars={{ endpoint }}>
+        // Cookieless page-view beacon: path only. Honours Do Not Track and Global Privacy Control.
+        // Visit /?notrack once on a device to exclude yourself; /?track undoes it.
+        (function () {
+          try {
+            var n = navigator;
+            if (n.doNotTrack === '1' || n.globalPrivacyControl) return;
+            var q = new URLSearchParams(location.search);
+            if (q.has('notrack')) { localStorage.setItem('ma-skip', '1'); return; }
+            if (q.has('track')) localStorage.removeItem('ma-skip');
+            if (localStorage.getItem('ma-skip')) return;
+            if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+            n.sendBeacon(endpoint, JSON.stringify({ p: location.pathname }));
+          } catch (e) {}
+        })();
+      </script>
+    )}
+  </body>
+</html>
