@@ -19,6 +19,31 @@ const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const MAX_LOGIN_FAILS = 8;
 const BOT = /bot|crawl|spider|slurp|headless|lighthouse|preview|facebookexternalhit|curl|wget|python-requests|go-http-client|httpclient|monitor|uptime/i;
 
+// Tables are created on first use, so there is no setup step to forget. Keep in sync with schema.sql.
+const SCHEMA = [
+  `CREATE TABLE IF NOT EXISTS agg (day TEXT NOT NULL, path TEXT NOT NULL, country TEXT NOT NULL, city TEXT NOT NULL DEFAULT '', lat REAL, lon REAL, views INTEGER NOT NULL DEFAULT 0, uniques INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (day, path, country, city)) WITHOUT ROWID`,
+  'CREATE TABLE IF NOT EXISTS seen (day TEXT NOT NULL, vid TEXT NOT NULL, PRIMARY KEY (day, vid)) WITHOUT ROWID',
+  'CREATE TABLE IF NOT EXISTS salt (day TEXT PRIMARY KEY, salt TEXT NOT NULL) WITHOUT ROWID',
+  'CREATE TABLE IF NOT EXISTS auth_fail (k TEXT PRIMARY KEY, day TEXT NOT NULL, n INTEGER NOT NULL) WITHOUT ROWID',
+];
+let schemaOk = false; // a plain flag, not a cached promise: promises must not be shared between requests
+async function ensureSchema(env: Env) {
+  if (schemaOk) return;
+  await env.DB.batch(SCHEMA.map((q) => env.DB.prepare(q)));
+  schemaOk = true;
+}
+
+/** A readable message when a required secret is missing, instead of a crash. */
+function configProblem(env: Env): string | null {
+  if (!env.DB) {
+    return 'Not configured: the D1 database binding "DB" is missing.\nIn worker/wrangler.toml there must be exactly one [[d1_databases]] block with binding = "DB" and your real database_id (see `npx wrangler d1 list`).\nThen run `npx wrangler deploy`; its output should list env.DB.\n';
+  }
+  const bad: string[] = [];
+  if (!env.DASH_PASSWORD) bad.push('DASH_PASSWORD');
+  if (!env.SESSION_SECRET || env.SESSION_SECRET.length < 16) bad.push('SESSION_SECRET (at least 16 characters)');
+  return bad.length ? `Not configured. Missing: ${bad.join(', ')}.\nSet each with: npx wrangler secret put <NAME>\n` : null;
+}
+
 // ---------- small helpers ----------
 const toHex = (u: Uint8Array) => Array.from(u, (b) => b.toString(16).padStart(2, '0')).join('');
 const randomHex = (bytes: number) => toHex(crypto.getRandomValues(new Uint8Array(bytes)));
@@ -74,6 +99,7 @@ function cleanPath(p: unknown): string {
 }
 
 async function record(env: Env, req: Request, path: string) {
+  await ensureSchema(env);
   const cf = (req as Request & { cf?: IncomingRequestCfProperties }).cf;
   const country = (cf?.country as string | undefined) || 'XX';
   const city = ((cf?.city as string | undefined) ?? '').slice(0, 80);
@@ -117,6 +143,7 @@ async function collect(req: Request, env: Env, ctx: ExecutionContext): Promise<R
 const clampDays = (v: string | null) => Math.min(365, Math.max(1, parseInt(v ?? '30', 10) || 30));
 
 async function stats(env: Env, days: number) {
+  await ensureSchema(env);
   const since = dayOf(Date.now() - (days - 1) * 86_400_000);
   const [daily, places, countries] = await env.DB.batch<Record<string, number | string | null>>([
     env.DB.prepare('SELECT day, SUM(views) AS views, SUM(uniques) AS uniques FROM agg WHERE day >= ?1 GROUP BY day').bind(since),
@@ -151,6 +178,7 @@ async function authed(req: Request, env: Env): Promise<boolean> {
 }
 
 async function login(req: Request, env: Env): Promise<Response> {
+  await ensureSchema(env);
   const now = Date.now();
   const ip = req.headers.get('CF-Connecting-IP') ?? 'local';
   const key = `${Math.floor(now / LOGIN_WINDOW_MS)}:${(await sha256(ip + env.SESSION_SECRET)).slice(0, 16)}`;
@@ -179,8 +207,7 @@ const shell = (title: string, body: string) =>
 const loginPage = (error = '') =>
   shell(
     'Stats · sign in',
-    `<main class="login">${mark}<form method="post" action="/login"><label class="label" for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" autofocus required><button type="submit">Enter</button>${
-      error ? `<p class="err" role="alert">${esc(error)}</p>` : ''
+    `<main class="login">${mark}<form method="post" action="/login"><label class="label" for="pw">Password</label><input id="pw" name="password" type="password" autocomplete="current-password" autofocus required><button type="submit">Enter</button>${error ? `<p class="err" role="alert">${esc(error)}</p>` : ''
     }</form></main>`,
   );
 
@@ -205,33 +232,52 @@ const dashPage = () =>
   );
 
 // ---------- router ----------
+const text = (body: string, status: number) =>
+  new Response(body, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8', ...SECURE_HEADERS } });
+
+async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const { pathname, searchParams } = new URL(req.url);
+
+  if (pathname === '/collect') {
+    if (req.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: { 'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN, 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type', Vary: 'Origin' },
+      });
+    }
+    return req.method === 'POST' ? collect(req, env, ctx) : new Response(null, { status: 405 });
+  }
+
+  if (pathname === '/' || pathname === '/login' || pathname === '/logout' || pathname === '/api/stats') {
+    const problem = configProblem(env);
+    if (problem) return text(problem, 503);
+  }
+
+  if (pathname === '/login') {
+    if (req.method === 'POST') return login(req, env);
+    return (await authed(req, env)) ? redirect('/') : html(loginPage());
+  }
+  if (pathname === '/logout' && req.method === 'POST') {
+    return redirect('/login', { 'Set-Cookie': 'ma_session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict' });
+  }
+  if (pathname === '/api/stats' && req.method === 'GET') {
+    if (!(await authed(req, env))) return json({ error: 'unauthorized' }, 401);
+    return json(await stats(env, clampDays(searchParams.get('days'))));
+  }
+  if (pathname === '/' && req.method === 'GET') {
+    return (await authed(req, env)) ? html(dashPage()) : redirect('/login');
+  }
+  return text('Not found', 404);
+}
+
 export default {
   async fetch(req: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const { pathname, searchParams } = new URL(req.url);
-
-    if (pathname === '/collect') {
-      if (req.method === 'OPTIONS') {
-        return new Response(null, {
-          status: 204,
-          headers: { 'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN, 'Access-Control-Allow-Methods': 'POST', 'Access-Control-Allow-Headers': 'Content-Type', Vary: 'Origin' },
-        });
-      }
-      return req.method === 'POST' ? collect(req, env, ctx) : new Response(null, { status: 405 });
+    try {
+      return await route(req, env, ctx);
+    } catch (e) {
+      // Log the real cause (see it with `npx wrangler tail`) and show a plain page instead of Cloudflare's error 1101.
+      console.error('unhandled', e instanceof Error ? `${e.name}: ${e.message}` : String(e));
+      return text('Something went wrong on the server. In the worker/ folder run `npx wrangler tail`, repeat the request, and read the error.\n', 500);
     }
-    if (pathname === '/login') {
-      if (req.method === 'POST') return login(req, env);
-      return (await authed(req, env)) ? redirect('/') : html(loginPage());
-    }
-    if (pathname === '/logout' && req.method === 'POST') {
-      return redirect('/login', { 'Set-Cookie': 'ma_session=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=Strict' });
-    }
-    if (pathname === '/api/stats' && req.method === 'GET') {
-      if (!(await authed(req, env))) return json({ error: 'unauthorized' }, 401);
-      return json(await stats(env, clampDays(searchParams.get('days'))));
-    }
-    if (pathname === '/' && req.method === 'GET') {
-      return (await authed(req, env)) ? html(dashPage()) : redirect('/login');
-    }
-    return new Response('Not found', { status: 404, headers: SECURE_HEADERS });
   },
 } satisfies ExportedHandler<Env>;
