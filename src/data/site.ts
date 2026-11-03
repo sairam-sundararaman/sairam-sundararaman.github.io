@@ -5,10 +5,10 @@ export type Link = { label: string; href: string }
 export const profile = {
   name: 'Sairam Sundararaman',
   short: 'Sairam S',
-  role: 'Research intern, WSAI, IIT Madras',
+  role: 'ex-Research intern, WSAI, IIT Madras',
   tagline: 'I study privacy and robustness in machine learning, from first principles.',
   blurb:
-    "I'm a research intern at WSAI, IIT Madras, advised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). I work on differentially private mechanisms for language models and on understanding why ML methods fail. I'm also in the final year of my B.Tech at PES University.",
+    "I'm was a research intern at WSAI, IIT Madras, advised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). I work on differentially private mechanisms for language models and on understanding why ML methods fail. I'm also in the final year of my B.Tech at PES University.",
   bio: [
     "The thread through my work is failure: take a method people rely on, then work out exactly when and why it breaks. My TMLR paper does that for the R-learner in network causal inference, my SAM reproduction does it for a popular optimizer, and the bit-collapse project does it for post-training quantization.",
     "I build things from scratch before trusting a library: an autodiff engine, SAM, a Hessian tool for loss landscapes. Right now I'm applying the same habit to privacy at WSAI, deriving the noise calibration for a new DP mechanism myself instead of treating it as a recipe.",
@@ -39,11 +39,11 @@ export const publication = {
 export const research = {
   title: 'Differentially private mechanisms for transformer LLMs',
   where: 'WSAI, IIT Madras · Advisor: [Prof. Krishna Pillutla](https://krishnap25.github.io/)',
-  when: 'June 2026 – present',
+  when: 'June 2026 – August 2026',
   points: [
-    'Designing a new DP mechanism for transformers, aiming for a better privacy-utility tradeoff than DP-SGD baselines.',
-    'Deriving sensitivity bounds and Gaussian noise calibration from scratch, and composing privacy across layers and generated tokens with zCDP.',
-    'Benchmarking on distilgpt2 and Qwen2.5-7B-Instruct.',
+    'Designing and analyzing a novel differentially private mechanism for transformer LLMs.',
+    'Derived sensitivity bounds and Gaussian mechanism noise calibration from first principles; formalized privacy composition under zCDP across layers and generated tokens.',
+    'Implemented and benchmarked on distilgpt2 and Qwen2.5-7B-Instruct.',
   ],
   interests: ['Differential privacy', 'Robustness', 'Adversarial ML'],
 }
@@ -91,6 +91,7 @@ export const about = {
 }
 
 export const news: { date: string; text: string }[] = [
+  { date: 'Aug 2026', text: 'Ended my Research Internship at WSAI, IIT Madras.' },
   { date: 'Jun 2026', text: 'Started as a Research Intern at WSAI, IIT Madras.' },
   { date: 'Mar 2026', text: 'The Final-Stage Bottleneck [accepted at TMLR](https://openreview.net/forum?id=QIE0FVSn0p).' },
   { date: 'Aug 2025', text: 'Teaching Assistant for Mathematics for Computer Science at PES University.' },
