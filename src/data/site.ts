@@ -8,7 +8,7 @@ export const profile = {
   role: 'ex-Research intern, WSAI, IIT Madras',
   tagline: 'I study privacy and robustness in machine learning, from first principles.',
   blurb:
-    "I'm was a research intern at WSAI, IIT Madras, advised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). I work on differentially private mechanisms for language models and on understanding why ML methods fail. I'm also in the final year of my B.Tech at PES University.",
+    "I was a research intern at WSAI, IIT Madras, advised by [Prof. Krishna Pillutla](https://krishnap25.github.io/). I work on differentially private mechanisms for language models and on understanding why ML methods fail. I'm also in the final year of my B.Tech at PES University.",
   bio: [
     "The thread through my work is failure: take a method people rely on, then work out exactly when and why it breaks. My TMLR paper does that for the R-learner in network causal inference, my SAM reproduction does it for a popular optimizer, and the bit-collapse project does it for post-training quantization.",
     "I build things from scratch before trusting a library: an autodiff engine, SAM, a Hessian tool for loss landscapes. Right now I'm applying the same habit to privacy at WSAI, deriving the noise calibration for a new DP mechanism myself instead of treating it as a recipe.",
