@@ -1,0 +1,59 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+<style>
+:root{--bg:#0a0e12;--panel:#101720;--ink:#dfe7ee;--dim:#7b8a99;--cy:#3ddad7;--am:#f5b942;--line:#1c2733}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Inter Tight',sans-serif;width:1280px}
+.mono{font-family:'JetBrains Mono',monospace}
+nav{display:flex;justify-content:space-between;padding:28px 64px;border-bottom:1px solid var(--line)}
+nav .logo{font-family:'Instrument Serif',serif;font-size:22px}
+nav a{color:var(--dim);text-decoration:none;margin-left:32px;font-size:14px}
+nav a.on{color:var(--cy)}
+.wrap{display:grid;grid-template-columns:200px 640px 240px;gap:56px;justify-content:center;padding:56px 0}
+.toc{position:relative}
+.toc h5{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.toc a{display:block;color:var(--dim);text-decoration:none;font-size:13px;padding:6px 0 6px 14px;border-left:2px solid var(--line)}
+.toc a.on{color:var(--cy);border-left-color:var(--cy)}
+article h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:44px;line-height:1.12}
+.meta{color:var(--dim);font-size:13px;margin:16px 0 32px}
+.article p{font-size:16.5px;line-height:1.75;color:#c3ced8;margin-bottom:18px}
+.article h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;margin:34px 0 14px}
+.eq{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;text-align:center;margin:24px 0;font-size:17px}
+.code{background:#0d1319;border:1px solid var(--line);border-radius:10px;padding:18px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:#9fd8d6;margin:24px 0}
+.kw{color:#f5b942}.cm{color:#4a6272}
+.sidenote{font-size:12.5px;color:var(--dim);line-height:1.6;border-top:1px solid var(--cy);padding-top:10px;margin-bottom:26px}
+.sidenote b{color:var(--cy);font-weight:500}
+.figure{background:var(--panel);border:1px solid var(--line);border-radius:12px;height:180px;margin:26px 0;position:relative;overflow:hidden}
+figcaption{font-size:12px;color:var(--dim);padding:10px 16px;border-top:1px solid var(--line)}
+.tag{border:1px solid var(--line);padding:4px 12px;border-radius:99px;font-size:11.5px;color:var(--am);margin-right:8px}
+</style></head><body>
+<nav><div class="logo">Sairam Sundararaman</div><div><a href="#">Research</a><a class="on" href="#">Writing</a><a href="#">About</a><a href="#">Résumé ↗</a></div></nav>
+<div class="wrap">
+<div class="toc mono"><h5>Contents</h5>
+<a href="#">1. Why quantization hurts</a><a class="on" href="#">2. Curvature, measured</a><a href="#">3. SAM flattens again</a><a href="#">4. Takeaways</a>
+</div>
+<div class="article">
+<h1>The Geometry of Bit-Collapse: what Int8 does to a loss landscape</h1>
+<div class="meta mono">Feb 2026 · 12 min read &nbsp;<span class="tag">optimization</span><span class="tag">quantization</span></div>
+<p>Post-training quantization is sold as free compression. It isn't. I trained a ResNet-18, snapshotted the weights, quantized to Int8, and walked random directions through loss space to compare curvature before and after.</p>
+<h2>2. Curvature, measured</h2>
+<p>For a filter \(h\) along direction \(v\), the local curvature is the quadratic form of the Hessian:</p>
+<div class="eq">$$\kappa(v) = v^{\top} \nabla^2_{\theta} \mathcal{L}(\hat\theta)\, v, \qquad \hat\theta = \arg\min_{\|\theta - \theta^\star\|_2 \le r} \mathcal{L}(\theta)$$</div>
+<p>The top eigenvalue jumps by roughly an order of magnitude after quantization — the basin sharpens exactly where SGD struggles most.<sidenote-inline></sidenote-inline></p>
+<div class="code"><span class="cm"># power iteration on Hessian-vector products (no materialized H)</span>
+<span class="kw">for</span> k <span class="kw">in</span> range(iters):
+    Hv = hvp(loss_fn, theta, v)   <span class="cm"># double-backprop</span>
+    v  = Hv / Hv.norm()</div>
+<div class="figure"><svg width="640" height="140"><path d="M0,120 C100,110 140,20 220,26 S360,120 460,60 S580,30 640,90" stroke="#f5b942" fill="none" stroke-width="2"/><path d="M0,124 C100,118 140,70 220,72 S360,124 460,96 S580,80 640,110" stroke="#3ddad7" fill="none" stroke-width="2"/></svg><figcaption class="mono">Fig 3 — loss along a random direction: fp32 (cyan) vs Int8 (amber). The quantized basin is visibly sharper.</figcaption></div>
+<h2>3. SAM flattens again</h2>
+<p>Applying SAM to the quantized model restores a basin flatter than full precision — consistent with the sharpness-aware story, now in the bit-width regime.</p>
+</div>
+<div><div class="sidenote"><b>Sidenote —</b> We use Hutchinson-free power iteration here since ResNet-18 fits in memory; for larger nets the stochastic estimator from the paper applies.</div>
+<div class="sidenote"><b>Reproduce —</b> All curves come from <span class="mono" style="color:var(--cy)">hessians/landscapes.ipynb</span> in the repo; seeds are pinned.</div>
+</div>
+</div>
+<div class="mono" style="padding:0 64px 20px;color:#38505c;font-size:11px">CONCEPT A — BLOG POST: sticky TOC · single measure column · margin sidenotes · KaTeX display math</div>
+</body></html>

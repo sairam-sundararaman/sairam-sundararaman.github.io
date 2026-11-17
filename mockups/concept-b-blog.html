@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+<style>
+:root{--paper:#faf6ee;--ink:#221c15;--dim:#7d715f;--ox:#8c2f24;--line:#e3dbc9;--marg:220px}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:'Source Serif 4',serif;width:1280px;font-size:17px;line-height:1.6}
+.mono{font-family:'IBM Plex Mono',monospace}
+.page{width:1160px;margin:0 auto;padding:40px 20px 60px}
+header.top{display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:20px}
+.name{font-size:24px;font-weight:600}
+nav a{color:var(--ink);text-decoration:none;margin-left:24px;font-size:14px;font-variant:small-caps}
+.body-grid{display:grid;grid-template-columns:640px var(--marg);column-gap:60px;justify-content:center;margin-top:48px}
+h1{font-size:36px;font-weight:600;line-height:1.25}
+.byline{color:var(--dim);font-size:14.5px;margin:12px 0 30px;font-style:italic}
+.para{position:relative;margin-bottom:18px}
+.sidenote{float:right;clear:right;width:var(--marg);font-size:13.5px;line-height:1.55;color:var(--dim);margin:6px -240px 18px 24px;border-top:1px solid var(--line);padding-top:8px}
+.sn-num{color:var(--ox);font-size:11px;vertical-align:super}
+.eqn{display:grid;grid-template-columns:1fr 50px;align-items:center;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:22px 0}
+.eqn .no{text-align:right;color:var(--dim);font-size:14px}
+h2{font-size:15px;font-variant:small-caps;letter-spacing:.12em;margin:36px 0 14px;font-weight:600}
+pre.code{background:#f2ecdf;border:1px solid var(--line);padding:16px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;margin:22px 0;width:640px}
+.kw{color:var(--ox)} .cm{color:#9a8f7c}
+.marginfig{float:right;clear:right;width:var(--marg);margin:6px -240px 18px 24px}
+.marginfig svg{border:1px solid var(--line);background:#fffdf8;display:block}
+.marginfig figcaption{font-size:12.5px;color:var(--dim);margin-top:6px;line-height:1.45}
+.cite{color:var(--ox);font-size:14px}
+.refs{font-size:14px;color:var(--dim);border-top:1px solid var(--ink);margin-top:40px;padding-top:14px}
+</style></head><body><div class="page">
+<header class="top"><div class="name">Sairam Sundararaman <span style="color:var(--ox)">— writing</span></div><nav><a>Home</a><a>All notes</a><a>About</a><a>Résumé</a></nav></header>
+<div class="body-grid"><div>
+<h1>Why your DP-SGD budget burns faster than you think</h1>
+<div class="byline">November 2026 · No. 4 in the privacy series · 9 min</div>
+<p class="para">The promise of the moments accountant is that composition cost grows like \(O(\sqrt{T})\), not linearly.<span class="sn-num">1</span> But in practice people set the noise multiplier once, train for longer than planned, and are surprised when \(\varepsilon\) at epoch 40 dwarfs their estimate. The accounting is right; the mental model is wrong.</p>
+<div class="sidenote"><span class="sn-num">1</span> Abadi et al., 2016 [1]. The accountant bounds Rényi divergence per step and composes multiplicatively before converting to (ε, δ).</div>
+<p class="para">Consider one epoch of sampling rate \(q = B/n\). Per-step privacy loss under zCDP is roughly:</p>
+<div class="eqn"><div>\(\rho(q,\sigma) \;=\; \tfrac{q^2}{2\sigma^2} \;+\; O(q^4)\)</div><div class="no mono">(1)</div></div>
+<p class="para">Composing \(T\) steps gives \(\rho_{\text{tot}} = T\rho\), so the sqrt-law comes from converting Rényi to approximate-DP, not from composition itself.<span class="sn-num">2</span> Double \(T\) and you double \(\rho_{\text{tot}}\) — the square root only appears against \(\delta\).</p>
+<div class="sidenote"><span class="sn-num">2</span> This conflation is the single most common bug I've seen in training scripts. See §3 of [2] for the tight conversion.</div>
+<h2>A two-line audit you can run tonight</h2>
+<pre class="code"><span class="cm"># log the true spend every checkpoint, not just epochs</span>
+<span class="kw">def</span> eps_now(T):  <span class="cm"># analytic Gaussian mechanism</span>
+    rho = T * q**2 / (2 * sigma**2)
+    <span class="kw">return</span> rho + 2*sigma*q*math.sqrt(rho * math.log(1/delta))</pre>
+<figure class="marginfig"><svg width="220" height="150"><path d="M10,140 C60,120 90,60 210,20" stroke="#8c2f24" fill="none" stroke-width="2"/><path d="M10,140 C60,128 90,105 210,75" stroke="#7d715f" fill="none" stroke-width="1.5" stroke-dasharray="4 3"/><text x="14" y="30" font-size="10" fill="#8c2f24" font-family="IBM Plex Mono">actual ε(T)</text><text x="120" y="95" font-size="10" fill="#7d715f" font-family="IBM Plex Mono">√T intuition</text></svg><figcaption>Fig 1 — ε grows ~linearly in steps inside the sqrt-conversion envelope; the √T picture misleads past the design point.</figcaption></figure>
+<h2>What to do about it</h2>
+<p class="para">Budget in steps, not epochs<span class="cite"> [1]</span>. Log \(\varepsilon\) at every checkpoint. If you plan early stopping, the <i>planned</i> horizon must be the accounting horizon — restarts silently re-spend.</p>
+<div class="refs"><b>References</b><br>[1] Abadi et al. <i>Deep Learning with Differential Privacy.</i> CCS 2016.<br>[2] Bu et al. <i>Deep Learning with Gaussian Differential Privacy.</i> ICML 2020.</div>
+</div><div></div></div>
+<div class="mono" style="text-align:center;color:#b7ab97;font-size:11px;margin-top:40px">CONCEPT B — BLOG POST: Tufte grid · numbered equations (1) · true margin sidenotes & margin figures · citation links</div>
+</div></body></html>

@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+<style>
+:root{--bg:#f4f2ec;--ink:#141414;--red:#e63312;--blue:#1f3fe0;--line:#cfccc2}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Space Grotesk',sans-serif;width:1280px}
+.mono{font-family:'IBM Plex Mono',monospace}
+header{display:flex;justify-content:space-between;align-items:center;padding:22px 40px;border-bottom:2px solid var(--ink)}
+header .id{font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase}
+nav a{margin-left:28px;font-size:13.5px;text-decoration:none;color:var(--ink);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+.progress{height:6px;background:#e4e1d8}.progress i{display:block;height:100%;width:62%;background:var(--red)}
+.wrap{display:grid;grid-template-columns:230px 700px 230px;gap:40px;justify-content:center;padding:56px 0}
+.meta-l .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6b675e;margin-bottom:8px}
+.meta-l .big{font-size:44px;font-weight:700;color:var(--blue)}
+.meta-l .sm{font-size:12.5px;color:#6b675e;margin-top:6px;line-height:1.6}
+.box{border:1.5px solid var(--ink);padding:16px;margin-top:22px;font-size:12.5px;line-height:1.6;background:#fbfaf6}
+.box .k{color:var(--red);font-weight:700;text-transform:uppercase;font-size:10.5px;letter-spacing:.15em}
+article h1{font-size:46px;font-weight:700;line-height:1.05;letter-spacing:-.015em}
+.deck{font-family:'STIX Two Text',serif;font-size:20px;line-height:1.55;color:#3d3a34;margin:22px 0 8px;font-style:italic}
+article p{font-family:'STIX Two Text',serif;font-size:18px;line-height:1.75;margin-bottom:20px}
+h2.h{display:flex;align-items:center;gap:14px;font-size:14px;letter-spacing:.16em;text-transform:uppercase;margin:40px 0 18px}
+h2.h::before{content:"";width:34px;height:14px;background:var(--red)}
+.eq{border:1.5px solid var(--ink);padding:22px;text-align:center;background:#fbfaf6;margin:26px 0;font-size:18px;position:relative}
+.eq .tag{position:absolute;top:-11px;left:16px;background:var(--blue);color:#fff;font-size:10.5px;padding:2px 10px;letter-spacing:.12em}
+pre.code{background:var(--ink);color:#e8e6df;padding:20px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;margin:26px 0}
+.kw{color:#ff7a5c}.cm{color:#7d7a72}
+.callout{border-left:6px solid var(--blue);background:#fff;padding:16px 20px;font-size:15px;line-height:1.6;margin:26px 0}
+.toc a{display:block;font-size:13px;text-decoration:none;color:#6b675e;padding:8px 0;border-bottom:1px solid var(--line)}
+.toc a.on{color:var(--ink);font-weight:700}
+.next{border:2px solid var(--ink);padding:22px;margin-top:30px;display:flex;justify-content:space-between;align-items:center;background:var(--blue);color:#fff}
+</style></head><body>
+<header><div class="id">Journal<span style="color:var(--red)">_</span></div><nav><a>Index</a><a style="color:var(--red)">Writing</a><a>About</a><a>Résumé ↗</a></nav></header>
+<div class="progress"><i></i></div>
+<div class="wrap">
+<div class="meta-l"><div class="lbl mono">Entry № 04</div><div class="big">09<small style="font-size:16px"> min</small></div><div class="sm mono">Nov 2026 · privacy series<br>tags: dp-sgd, zcdp,<br>composition</div>
+<div class="box"><span class="k">TL;DR</span><br>Composition is linear in steps; the √T only appears in the Rényi→(ε,δ) conversion. Budget in steps, log at every checkpoint.</div>
+<div class="box"><span class="k">Reproduce</span><br>All numbers regenerate via <span class="mono">make fig4</span> in the companion repo.</div></div>
+<article>
+<h1>Why your DP-SGD budget burns faster than you think</h1>
+<p class="deck">The moments accountant is honest. The intuition people carry away from it is not.</p>
+<p>Everyone remembers \(O(\sqrt{T})\) composition. Fewer people notice that the square root lives in the <i>conversion</i> from Rényi divergence to approximate-DP — not in composition itself, which is plainly additive.</p>
+<div class="eq"><span class="tag mono">KEY INEQUALITY</span>$$\rho_{\text{tot}} \;=\; T\cdot\Big(\tfrac{q^2}{2\sigma^2} + O(q^4)\Big),\qquad \varepsilon \;\le\; \rho_{\text{tot}} + \tfrac{\log(1/\delta)}{a-1}$$</div>
+<h2 class="h">The two-line audit</h2>
+<pre class="code"><span class="cm"># analytic Gaussian mechanism — call this at EVERY checkpoint</span>
+<span class="kw">def</span> eps_now(T, q, sigma, delta):
+    rho = T * q**2 / (2*sigma**2)
+    <span class="kw">return</span> rho + 2*sigma*q*math.sqrt(rho*math.log(1/delta))</pre>
+<div class="callout"><b>Rule of thumb —</b> if early stopping is on the table, the <i>planned</i> horizon is the accounting horizon. Restarts silently re-spend the whole budget.</div>
+<p>Budget in steps, never epochs. A restart mid-epoch has already spent its noise; the accountant knows this even when your config file doesn't.</p>
+<div class="next"><div><div class="mono" style="font-size:10.5px;opacity:.8">NEXT ENTRY →</div><div style="font-size:20px;font-weight:700">Reading a loss landscape like a curvature map</div></div><div style="font-size:34px;font-weight:700">→</div></div>
+</article>
+<div class="toc"><div class="lbl mono" style="font-size:11px;letter-spacing:.18em;color:#6b675e;margin-bottom:10px">SECTIONS</div>
+<a href="#">01 · The sqrt myth</a><a class="on" href="#">02 · Accounting, honestly</a><a href="#">03 · The two-line audit</a><a href="#">04 · Rules of thumb</a>
+<div class="box"><span class="k">Cite</span><br><span class="mono" style="font-size:11px">@misc{sundararaman2026dpsgd,<br>&nbsp;&nbsp;title={...}, year={2026}}</span></div></div>
+</div>
+<div class="mono" style="padding:0 40px 18px;font-size:11px;color:#9a958a">CONCEPT C — BLOG POST: calm STIX reading column · red rule headings · boxed KaTeX display math · reading progress bar · TL;DR rail</div>
+</body></html>

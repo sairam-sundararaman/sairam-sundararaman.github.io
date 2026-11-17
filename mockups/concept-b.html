@@ -1,0 +1,63 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body)"></script>
+<style>
+:root{--paper:#faf6ee;--ink:#221c15;--dim:#7d715f;--ox:#8c2f24;--line:#e3dbc9}
+*{box-sizing:border-box;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:'Source Serif 4',serif;width:1280px;font-size:17px;line-height:1.65}
+.mono{font-family:'IBM Plex Mono',monospace}
+header.top{display:flex;justify-content:space-between;padding:36px 0;border-bottom:1px solid var(--ink)}
+.page{width:880px;margin:0 auto;padding:0 20px 60px}
+.name{font-size:34px;font-weight:600}
+.sub{color:var(--dim);font-style:italic;margin-top:6px}
+nav a{color:var(--ink);text-decoration:none;margin-left:26px;font-size:14px;font-variant:small-caps;letter-spacing:.05em}
+.abstract{margin:44px 0 8px;font-size:16px}
+.abstract .lbl{font-variant:small-caps;letter-spacing:.1em;font-weight:600}
+.kw{margin-top:14px;color:var(--ox);font-size:14.5px;font-style:italic}
+h2.sec{font-size:15px;font-variant:small-caps;letter-spacing:.14em;border-bottom:1px solid var(--line);padding-bottom:6px;margin:48px 0 20px;font-weight:600}
+.entry{display:grid;grid-template-columns:56px 1fr;gap:14px;margin-bottom:26px}
+.num{color:var(--ox);font-size:14px;padding-top:3px}
+.entry h3{font-size:19px;font-weight:600;line-height:1.35}
+.entry .ven{color:var(--dim);font-size:15px;margin-top:3px}
+.entry p{font-size:15.5px;margin-top:6px;color:#4b4237}
+.entry a{color:var(--ox);text-decoration:none;border-bottom:1px solid rgba(140,47,36,.35);font-size:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.note{border:1px solid var(--line);border-left:3px solid var(--ox);background:#fffdf8;padding:18px 20px;font-size:15px}
+.note h4{font-size:16px;margin-bottom:6px}
+.eqn{display:grid;grid-template-columns:1fr 60px;text-align:center;background:#fffdf8;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 0;margin:20px 0;align-items:center}
+.eqn .no{text-align:right;color:var(--dim);font-size:14px;padding-right:8px}
+footer{border-top:1px solid var(--ink);margin-top:56px;padding-top:18px;font-size:13.5px;color:var(--dim);display:flex;justify-content:space-between}
+</style></head><body><div class="page">
+<header class="top"><div><div class="name">Sairam Sundararaman</div><div class="sub">Privacy and robustness in machine learning, from first principles</div></div>
+<nav><a>Abstract</a><a>Publications</a><a>Writing</a><a>Projects</a><a>Résumé</a></nav></header>
+
+<div class="abstract"><span class="lbl">Abstract.</span>&ensp;The thread through my work is failure: take a method people rely on, then work out exactly when and why it breaks. A TMLR paper does this for the R-learner in network causal inference; a SAM reproduction does it for a popular optimizer; a bit-collapse study does it for post-training quantization. Currently at WSAI, IIT Madras, deriving noise calibration for differentially private LLM mechanisms by hand rather than treating it as a recipe.</div>
+<div class="kw"><i>Keywords —</i> differential privacy · robustness · adversarial ML · optimization</div>
+
+<h2 class="sec">§1 &nbsp;Publications</h2>
+<div class="entry"><div class="num mono">(1)</div><div><h3>The Final-Stage Bottleneck: A Systematic Dissection of the R-Learner for Network Causal Inference</h3>
+<div class="ven"><b>Sairam S</b>, Sara Girdhar, Shivam Soni — <i>Transactions on Machine Learning Research</i>, 2026.</div>
+<p style="margin-top:8px"><a>arXiv ↗</a> &emsp; <a>Code ↗</a> &emsp; <a>OpenReview ↗</a> &emsp; <a>W&amp;B ↗</a></p></div></div>
+
+<h2 class="sec">§2 &nbsp;Current Research</h2>
+<div class="entry"><div class="num mono">(2)</div><div><h3>Differentially private mechanisms for transformer LLMs</h3>
+<div class="ven">WSAI, IIT Madras · Advisor: Prof. Krishna Pillutla · Jun–Aug 2026</div>
+<p>Sensitivity bounds and Gaussian-mechanism calibration derived from first principles; zCDP composition formalized across layers and generated tokens:</p>
+<div class="eqn"><div>\(\varepsilon_{\text{tot}} = \sqrt{\textstyle\sum_{\ell=1}^{L}}\;\tfrac{\Delta_\ell^2}{2\sigma^2}\) such that the mechanism is \(O(\varepsilon_{\text{tot}})\)-zCDP</div><div class="no mono">(2.1)</div></div>
+<p>Benchmarked on distilgpt2 and Qwen2.5-7B-Instruct.</p></div></div>
+
+<h2 class="sec">§3 &nbsp;Selected Projects</h2>
+<div class="two">
+<div class="note"><h4>The Geometry of Bit-Collapse</h4>Int8 quantization sharpens ResNet-18's loss basin and spikes Hessian eigenvalues, destabilizing SGD. SAM restores a flatter basin than full precision. <a style="color:var(--ox);text-decoration:none">GitHub ↗</a></div>
+<div class="note"><h4>Reproducing SAM · autodiff from scratch</h4>A from-scratch automatic differentiation engine, a faithful SAM reproduction with ablations, and a Hessian tool for loss landscapes. <a style="color:var(--ox);text-decoration:none">GitHub ↗</a></div>
+</div>
+
+<h2 class="sec">§4 &nbsp;Recent Writing</h2>
+<div class="entry"><div class="num mono">¶</div><div><h3>Why your DP-SGD budget burns faster than you think</h3><div class="ven">Nov 2026 · 9 min · technical journal — continues §2 with the accountant's-eye view of composition.</div></div></div>
+<div class="entry"><div class="num mono">¶</div><div><h3>Reading a loss landscape like a curvature map</h3><div class="ven">Oct 2026 · 14 min · notes on filter-normalized random directions and power iteration.</div></div></div>
+
+<footer><span class="mono">sairam-s.dev · built from .mdx files</span><span class="mono">→ email · scholar · github</span></footer>
+<div class="mono" style="text-align:center;color:#b7ab97;font-size:11px;padding-bottom:24px">CONCEPT B — "PREPRINT" · LIVING ACADEMIC PAPER · HOME PAGE (single scrolling document)</div>
+</div></body></html>
